@@ -35,8 +35,8 @@ public class MemoryTable {
         }
     }
 
-
-    public Object[] cutMT(int n, int m){
+//-----------------------------------------------------------------------------
+    public Object[] getRangeMT(int n, int m){
         Object[] ret = new Object[m + 1 - n];
         Object[] keys =  memoryTable.keySet().toArray();
         for (int i = n; i <= m; ++i) {
@@ -44,7 +44,17 @@ public class MemoryTable {
         }
         return ret;
     }
+    // Количество строк
+    public int getRowCount() {
+        return this.memoryTable.size();
+    }
 
+    // Количество столбцов
+    public int getColumnCount() {
+        return 3;
+    }
+
+// -------------------------------------------------------------------------
     public void testFilDataMT(){
         for (int i = 1; i < 100; i++)
             this.addRecord(i, new Object[]{"bla " + i,"kva " + 2*i, "ewr" + (100 - i)});
@@ -56,7 +66,7 @@ public class MemoryTable {
         mt.testFilDataMT();
         System.out.println("LALA");
         mt.printMt();
-        printMas(mt.cutMT(7, 15));
+        printMas(mt.getRangeMT(7, 15));
     }
 }
 
