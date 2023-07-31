@@ -1,6 +1,6 @@
 import java.util.*;
 
-
+import java.util.Comparator;
 public class MemoryTable {
     HashMap<Integer, Object[]> memoryTable = new HashMap<Integer, Object[]>();
 
@@ -36,6 +36,8 @@ public class MemoryTable {
     }
 
 //-----------------------------------------------------------------------------
+
+
     public Object[] getRangeMT(int n, int m){
         Object[] ret = new Object[m + 1 - n];
         Object[] keys =  memoryTable.keySet().toArray();
@@ -44,6 +46,32 @@ public class MemoryTable {
         }
         return ret;
     }
+
+
+    //  прямая сортировка
+    public Object[] getAscRangeMT(int n, int m, int fn){
+       Object[] obj = getRangeMT(n,m);
+       RowComparator rc = new RowComparator(fn);
+       Arrays.parallelSort(obj, 0, obj.length, rc);
+        //Arrays.sort(obj, rc);
+        return obj;
+    }
+
+    //  обратная сортировка
+    public Object[] getDescRangeMT(int n, int m, int fn){
+        Object[] obj = getRangeMT(n,m);
+        RowComparator rc = new RowComparator(fn);
+        Arrays.parallelSort(obj, 0, obj.length, new Comparator(){
+            public int compare(Object o1a, Object o2b){
+                return -rc.compare(o1a,o2b);
+            }
+        });
+        //Arrays.sort(obj, rc);
+        return obj;
+    }
+
+//    public void
+
     // Количество строк
     public int getRowCount() {
         return this.memoryTable.size();
@@ -54,6 +82,8 @@ public class MemoryTable {
         return 3;
     }
 
+
+
 // -------------------------------------------------------------------------
     public void testFilDataMT(){
         for (int i = 1; i < 100; i++)
@@ -61,12 +91,15 @@ public class MemoryTable {
 
     }
 
+
+
     public static void main(String[] args) {
         MemoryTable mt = new MemoryTable();
         mt.testFilDataMT();
         System.out.println("LALA");
         mt.printMt();
-        printMas(mt.getRangeMT(7, 15));
+//        printMas(mt.getRangeMT(7, 15));
+        printMas(mt.getDescRangeMT(0, 4, 2));
     }
 }
 
