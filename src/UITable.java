@@ -44,9 +44,10 @@ import java.awt.event.ActionListener;
 public class UITable  extends JFrame  {
 
     MemoryTable mt = new MemoryTable();
+    SimpleModel mmodel = new SimpleModel();
 
     {
-        mt.testFilDataMT();
+        ////mt.testFilDataMT();
     }
 
     // Модель данных таблицы
@@ -96,7 +97,7 @@ public class UITable  extends JFrame  {
             }
         });
         // Создание таблицы на основе модели данных
-        JTable table2 = new JTable(new SimpleModel());
+        JTable table2 = new JTable(mmodel);
         // Определение высоты строки
         table2.setRowHeight(24);
 
@@ -109,10 +110,31 @@ public class UITable  extends JFrame  {
         JPanel buttons = new JPanel();
         buttons.add(add);
         buttons.add(remove);
+
         getContentPane().add(buttons, "South");
         // Вывод окна на экран
         setSize(400, 300);
         setVisible(true);
+
+        // Создание кнопки Сортировать таблицы
+        JButton sort1 = new JButton("Сортировать");
+        buttons.add(sort1);
+        sort1.addActionListener(new ActionListener() {
+            private int sortDir = -1;
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Sorting");
+                mt.sort(2, sortDir);
+                sortDir =  - sortDir;
+                mmodel.fireTableDataChanged();
+
+//                mt.getDescRangeMT(0, 4, 2)
+
+//                // Номер выделенной строки
+//                int idx = table.getSelectedRow();
+//                // Удаление выделенной строки
+//                tableModel.removeRow(idx);
+            }
+        });
     }
     // Модель данных
 //    class SimpleModel extends AbstractTableModel
@@ -178,13 +200,13 @@ public class UITable  extends JFrame  {
         {
 
             Object ret = "netu" + row + column;
-            Object[] o = mt.getRangeMT(row, row);
+            Object[] o = mt.getRangeMT(row , row);
             Object[] r = (Object[])o[0];
-            System.out.println(r);
+            System.out.println("r " + r);
             System.out.println(mt.getRowCount()+" "+r.length);
             System.out.println(r.length);
             if (r != null && column < r.length )
-                ret = r[column];
+                ret = r[column]+" "+row+" "+column;
 
             return ret;
         }
