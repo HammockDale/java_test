@@ -88,12 +88,13 @@ public class Client {
            mt.dropRecord(dropReq.id);
         }
 */
-        System.out.println("Client:  sending to server request"+req.requestName());
+        System.out.println("Client: sending to server request "+req.requestName());
         objectOutputStream.writeObject(req);
-        System.out.println("Client:  request sent to server, flushing stream");
+        System.out.println("Client: request sent to server, flushing stream");
         objectOutputStream.flush();
+        System.out.println("Client: waiting response");
         Response rsp = (Response)objectInputStream.readObject();
-        System.out.println("CLient: received response from sever "+rsp.getClass().getName());
+        System.out.println("Client: received response from sever "+rsp.getClass().getName());
 
 
         return ret;

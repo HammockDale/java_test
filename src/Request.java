@@ -29,3 +29,22 @@ class DropRecRequest  extends Request  implements Serializable {
          return "drop row id: "+id;
      }
 }
+
+
+
+class ReloadRecRequest  extends Request  implements Serializable {
+
+    public  String requestName(){
+        return "reload table ";
+    }
+}
+
+
+class AddRecRequest  extends Request  implements Serializable {
+
+    public Object[] row = null;
+
+    public  String requestName(){
+        return "add row ";
+    }
+}

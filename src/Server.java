@@ -39,15 +39,25 @@ public class Server {
 
                                 Request req = (Request) objectInputStream.readObject();
 
-                                System.out.println("Server: received request" + req.requestName());
+                                System.out.println("Server: received request " + req.requestName());
 
                                 try {
                                     System.out.println("Server: processing request");
 
                                     if (req instanceof DropRecRequest) {
+                                        System.out.println("Server: drop");
                                         DropRecRequest dropReq = (DropRecRequest) req;
                                         mt.dropRecord(dropReq.id);
+                                    } else if (req instanceof ReloadRecRequest) {
+                                        System.out.println("Server: reload");
+                                        ReloadRecRequest reloadReq = (ReloadRecRequest) req;
+                                        mt.reload();
+                                    } else if (req instanceof AddRecRequest) {
+                                        System.out.println("Server: add row");
+                                        AddRecRequest addReq = (AddRecRequest) req;
+                                        mt.addRecord(addReq.row);
                                     }
+
 
                                     System.out.println("Server: request processed");
                                 } finally {

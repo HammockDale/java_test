@@ -138,7 +138,15 @@ public class UITable  extends JFrame  {
                     exc.printStackTrace();
                 }
 
-                mt.reload();
+                // Обновление данных
+//                mt.reload();
+                ReloadRecRequest reloadReq = new ReloadRecRequest();
+                try {
+                    client.call(reloadReq);
+                } catch (Exception exc) {
+                    exc.printStackTrace();
+                }
+
                 mmodel.fireTableDataChanged();
                ////    tableModel.removeRow(idx);
             }
@@ -150,8 +158,25 @@ public class UITable  extends JFrame  {
             private int i = 0;
             public void actionPerformed(ActionEvent e) {
                 ++i;
-                mt.addRecord( new Object[]{"id", "akrya " + i,"follya " + 2*i, "mur" + (100 - i)});
-                mt.reload();
+
+//                mt.addRecord( new Object[]{"id", "akrya " + i,"follya " + 2*i, "mur" + (100 - i)});
+                AddRecRequest addReq = new AddRecRequest();
+                addReq.row = new Object[]{"id", "akrya " + i,"follya " + 2*i, "mur" + (100 - i)};
+                try {
+                    client.call(addReq);
+                } catch (Exception exc) {
+                    exc.printStackTrace();
+                }
+
+                // Обновление данных
+//                mt.reload();
+                ReloadRecRequest reloadReq = new ReloadRecRequest();
+                try {
+                    client.call(reloadReq);
+                } catch (Exception exc) {
+                    exc.printStackTrace();
+                }
+
                 mmodel.fireTableDataChanged();
 //                tableModel.removeRow(idx);
             }
@@ -160,7 +185,15 @@ public class UITable  extends JFrame  {
         JButton reloadTable = new JButton("Обновить");
         reloadTable.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                mt.reload();
+
+                ReloadRecRequest reloadReq = new ReloadRecRequest();
+                try {
+                    client.call(reloadReq);
+                } catch (Exception exc) {
+                    exc.printStackTrace();
+                }
+
+//                mt.reload();
                 mmodel.fireTableDataChanged();
             }
         });
