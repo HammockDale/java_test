@@ -86,21 +86,36 @@ public class UITable  extends JFrame  {
                         "кг", "Цена"});
             }
         });
-        // Создание кнопки удаления строки таблицы
-        JButton remove = new JButton("Удалить");
-        remove.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                // Номер выделенной строки
-                int idx = table1.getSelectedRow();
-                // Удаление выделенной строки
-                tableModel.removeRow(idx);
-            }
-        });
+//        // Создание кнопки удаления строки таблицы
+//        JButton remove = new JButton("Удалить");
+//        remove.addActionListener(new ActionListener() {
+//            public void actionPerformed(ActionEvent e) {
+//                // Номер выделенной строки
+//                int idx = table1.getSelectedRow();
+//                // Удаление выделенной строки
+//                tableModel.removeRow(idx);
+//            }
+//        });
         // Создание таблицы на основе модели данных
         JTable table2 = new JTable(mmodel);
         // Определение высоты строки
         table2.setRowHeight(24);
 
+
+        // Создание кнопки удаления строки таблицы
+        JButton remove = new JButton("Удалить");
+        remove.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Номер выделенной строки
+                int idx = table2.getSelectedRow();
+                // Удаление выделенной строки
+
+                mt.dropRecord( Integer.parseInt(""+table2.getValueAt(idx,0)));
+                mt.reload();
+                mmodel.fireTableDataChanged();
+//                tableModel.removeRow(idx);
+            }
+        });
         // Формирование интерфейса
         Box contents = new Box(BoxLayout.Y_AXIS);
         contents.add(new JScrollPane(table1));
@@ -199,13 +214,16 @@ public class UITable  extends JFrame  {
         public Object getValueAt(int row, int column)
         {
 
-            Object ret = "netu" + row + column;
+            Object ret = "" ;
             Object[] o = mt.getRangeMT(row , row);
             Object[] r = (Object[])o[0];
             System.out.println("r " + r);
             System.out.println(mt.getRowCount()+" "+r.length);
             System.out.println(r.length);
-            if (r != null && column < r.length )
+
+            ret = r[column];
+
+            if (r != null && column > 0 && column < r.length )
                 ret = r[column]+" "+row+" "+column;
 
             return ret;

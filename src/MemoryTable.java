@@ -10,12 +10,34 @@ public class MemoryTable {
         rowsToReturn = getUnsortedRangeMT(0,getRowCount()-1);
     }
 
-    public void addRecord(Integer id, Object[] o){
+
+
+    private int seqNo = 1;
+
+    public void addRecord(Object[] o){
+        if (o == null ||o.length < 1) {
+            System.out.println("wrong object");
+        } else {
+            addRecord(seqNo, o);
+            ++seqNo;
+        }
+    }
+
+    private void addRecord(Integer id, Object[] o){
         if (id == null || o == null) {
             System.out.println("wrong object");
-        } else
-        memoryTable.put(id, o);
+        } else {
+            o[0] = id;
+            memoryTable.put(id, o);
+        }
     }
+
+    public void dropRecord(int id){
+        memoryTable.remove(id);
+    }
+
+
+
 
     public void printMt() {
        Object[] keys =  memoryTable.keySet().toArray();
@@ -54,6 +76,12 @@ public class MemoryTable {
 
     }
 
+    public void reload(){
+        rowsToReturn = null;
+        rowsToReturn = getUnsortedRangeMT(0,getRowCount()-1);
+        //TODO: восстановить сортировку как было
+    }
+
     public void sort(int fn, int dir){
         if(dir < 0)
             rowsToReturn = getAscRangeMT(0,getRowCount()-1,fn);
@@ -63,7 +91,7 @@ public class MemoryTable {
             rowsToReturn = getUnsortedRangeMT(0,getRowCount()-1);
     }
 
-    Object[] getUnsortedRangeMT(int n, int m){
+    private Object[] getUnsortedRangeMT(int n, int m){
         Object[] ret = new Object[m + 1 - n];
         Object[] keys =  memoryTable.keySet().toArray();
         for (int i = n; i <= m; ++i) {
@@ -75,7 +103,7 @@ public class MemoryTable {
 
 
     //  прямая сортировка
-    Object[] getAscRangeMT(int n, int m, int fn){
+    private Object[] getAscRangeMT(int n, int m, int fn){
        Object[] obj = getUnsortedRangeMT(n,m);
        RowComparator rc = new RowComparator(fn);
        Arrays.parallelSort(obj, 0, obj.length, rc);
@@ -115,7 +143,7 @@ public class MemoryTable {
 // -------------------------------------------------------------------------
     public void testFilDataMT(){
         for (int i = 1; i < 100; i++)
-            this.addRecord(i, new Object[]{"bla " + i,"kva " + 2*i, "ewr" + (100 - i)});
+            this.addRecord( new Object[]{"id", "bla " + i,"kva " + 2*i, "ewr" + (100 - i)});
 
     }
 
