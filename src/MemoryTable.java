@@ -79,10 +79,21 @@ public class MemoryTable {
     public void reload(){
         rowsToReturn = null;
         rowsToReturn = getUnsortedRangeMT(0,getRowCount()-1);
-        //TODO: восстановить сортировку как было
+        //TODO: восстановливая сортировку как было
+        //      при этом НЕ доставать все заново из таблицы
+        //      а пересортировать уже имеющийся массив
+        sort(sortFn, sortDir);
+
     }
 
+
+    private int sortDir = 0;
+    private int sortFn = 0;
+
     public void sort(int fn, int dir){
+        sortDir = dir;
+        sortFn = fn;
+
         if(dir < 0)
             rowsToReturn = getAscRangeMT(0,getRowCount()-1,fn);
         else if(dir < 0)

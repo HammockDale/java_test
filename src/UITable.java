@@ -4,6 +4,7 @@ import javax.swing.table.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 
 //class MyTableModel extends DefaultTableModel {
@@ -43,11 +44,27 @@ import java.awt.event.ActionListener;
 
 public class UITable  extends JFrame  {
 
+    Server srv;
+
     MemoryTable mt = new MemoryTable();
+
     SimpleModel mmodel = new SimpleModel();
+
+
+
+    Client client = new Client();
 
     {
         ////mt.testFilDataMT();
+        client.mt = mt;
+
+        try {
+            srv = new Server(9999);
+            srv.mt = mt;
+            srv.startService();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // Модель данных таблицы
@@ -111,10 +128,19 @@ public class UITable  extends JFrame  {
                 int idx = table2.getSelectedRow();
                 // Удаление выделенной строки
 
-                mt.dropRecord( Integer.parseInt(""+table2.getValueAt(idx,0)));
+//                mt.dropRecord( Integer.parseInt(""+table2.getValueAt(idx,0)));
+                DropRecRequest dropReq = new DropRecRequest();
+                dropReq.id = Integer.parseInt(""+table2.getValueAt(idx,0));
+
+                try {
+                    client.call(dropReq);
+                } catch (Exception exc) {
+                    exc.printStackTrace();
+                }
+
                 mt.reload();
                 mmodel.fireTableDataChanged();
-//                tableModel.removeRow(idx);
+               ////    tableModel.removeRow(idx);
             }
         });
 
@@ -124,7 +150,7 @@ public class UITable  extends JFrame  {
             private int i = 0;
             public void actionPerformed(ActionEvent e) {
                 ++i;
-                mt.addRecord( new Object[]{"id", "krya " + i,"ollya " + 2*i, "mur" + (100 - i)});
+                mt.addRecord( new Object[]{"id", "akrya " + i,"follya " + 2*i, "mur" + (100 - i)});
                 mt.reload();
                 mmodel.fireTableDataChanged();
 //                tableModel.removeRow(idx);
@@ -231,9 +257,9 @@ public class UITable  extends JFrame  {
             Object ret = "" ;
             Object[] o = mt.getRangeMT(row , row);
             Object[] r = (Object[])o[0];
-            System.out.println("r " + r);
-            System.out.println(mt.getRowCount()+" "+r.length);
-            System.out.println(r.length);
+//            System.out.println("r " + r);
+//            System.out.println(mt.getRowCount()+" "+r.length);
+//            System.out.println(r.length);
 
             ret = r[column];
 
