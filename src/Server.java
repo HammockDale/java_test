@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.*;
 
 public class Server {
@@ -30,13 +31,22 @@ public class Server {
                         System.out.println("Server: accepted connection from client");
                         try {
                             ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
+                            ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+
                             Request req = (Request) objectInputStream.readObject();
 
                             System.out.println("Server: received request"+req.requestName());
-                            if(req instanceof DropRecRequest){
-                                DropRecRequest dropReq=  (DropRecRequest)req;
-                                mt.dropRecord(dropReq.id);
+
+                            try {
+
+                                if (req instanceof DropRecRequest) {
+                                    DropRecRequest dropReq = (DropRecRequest) req;
+                                    mt.dropRecord(dropReq.id);
+                                }
+                            }finally{
+                                objectOutputStream.writeObject(new EmptyResponse());
                             }
+
 
                         }catch(Exception e2){
                             e2.printStackTrace();

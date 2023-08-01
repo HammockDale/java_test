@@ -33,6 +33,7 @@ public class MemoryTable {
     }
 
     public void dropRecord(int id){
+        System.out.println("MemoryTable: dropRecord("+id+")");
         memoryTable.remove(id);
     }
 

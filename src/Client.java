@@ -9,6 +9,7 @@ public class Client {
 
     private Socket socket;
     private ObjectOutputStream objectOutputStream;
+    private ObjectInputStream objectInputStream;
 
     public Client(){
         this("localhost",9999);
@@ -29,6 +30,8 @@ public class Client {
             System.out.println("Client: connecting to server "+host+":"+port);
             socket = new Socket(host, port);
             objectOutputStream = new  ObjectOutputStream(socket.getOutputStream());
+            objectInputStream = new ObjectInputStream(socket.getInputStream());
+
         }catch(Exception ee){
             ee.printStackTrace();
         }
@@ -63,15 +66,19 @@ public class Client {
 
 
 
-
+/*  //// тест вызова через локально доустпную таблицу баазы данных
         if(req instanceof DropRecRequest){
            DropRecRequest dropReq=  (DropRecRequest)req;
            mt.dropRecord(dropReq.id);
         }
-
+*/
         System.out.println("Client:  sending to server request"+req.requestName());
         objectOutputStream.writeObject(req);
+        System.out.println("Client:  request sent to server, flushing stream");
         objectOutputStream.flush();
+        Response rsp = (Response)objectInputStream.readObject();
+        System.out.println("CLient: received response from sever "+rsp.getClass().getName());
+
 
         return ret;
     }

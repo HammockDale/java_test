@@ -128,16 +128,16 @@ public class UITable  extends JFrame  {
                 int idx = table2.getSelectedRow();
                 // Удаление выделенной строки
 
-//                mt.dropRecord( Integer.parseInt(""+table2.getValueAt(idx,0)));
+                mt.dropRecord( Integer.parseInt(""+table2.getValueAt(idx,0)));
                 DropRecRequest dropReq = new DropRecRequest();
                 dropReq.id = Integer.parseInt(""+table2.getValueAt(idx,0));
-
+/*
                 try {
                     client.call(dropReq);
                 } catch (Exception exc) {
                     exc.printStackTrace();
                 }
-
+*/
                 mt.reload();
                 mmodel.fireTableDataChanged();
                ////    tableModel.removeRow(idx);
