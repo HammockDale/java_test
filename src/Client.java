@@ -21,7 +21,11 @@ public class Client {
 
     public void connect(){
         try {
-            if(socket != null) socket.close();
+
+            if(socket != null) {
+                System.out.println("Client: closing socket");
+                socket.close();
+            }
             socket = null;
         } catch (IOException e) {
             e.printStackTrace();
@@ -37,13 +41,25 @@ public class Client {
         }
     }
 
-    public Response call(Request req) throws IOException, ClassNotFoundException {
+    public Response call(Request req){
+        try {
+            if(socket == null || socket.isConnected()) connect();
+            return internalCall(req);
+        } catch (Exception e) {
+            e.printStackTrace();
+            connect();
+        }
+        EmptyResponse ret = new EmptyResponse();
+        ret.errStatus = "Server call error";
+        return ret;
+    }
+
+    private Response internalCall(Request req) throws IOException, ClassNotFoundException {
         Response ret = new EmptyResponse();
 
-        System.out.println("Client: sending request"+req.requestName());
+        System.out.println("Client: sending request "+req.requestName());
 
         if(socket == null || !socket.isConnected() || socket.isClosed()){
-            socket = null;
             connect();
         }
 

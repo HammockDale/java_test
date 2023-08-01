@@ -128,16 +128,16 @@ public class UITable  extends JFrame  {
                 int idx = table2.getSelectedRow();
                 // Удаление выделенной строки
 
-                mt.dropRecord( Integer.parseInt(""+table2.getValueAt(idx,0)));
+ //               mt.dropRecord( Integer.parseInt(""+table2.getValueAt(idx,0)));
                 DropRecRequest dropReq = new DropRecRequest();
                 dropReq.id = Integer.parseInt(""+table2.getValueAt(idx,0));
-/*
+
                 try {
                     client.call(dropReq);
                 } catch (Exception exc) {
                     exc.printStackTrace();
                 }
-*/
+
                 mt.reload();
                 mmodel.fireTableDataChanged();
                ////    tableModel.removeRow(idx);
@@ -156,6 +156,27 @@ public class UITable  extends JFrame  {
 //                tableModel.removeRow(idx);
             }
         });
+
+        JButton reloadTable = new JButton("Обновить");
+        reloadTable.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                mt.reload();
+                mmodel.fireTableDataChanged();
+            }
+        });
+
+        JButton sort1 = new JButton("Сортировать");
+        sort1.addActionListener(new ActionListener() {
+            private int sortDir = -1;
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Sorting");
+                mt.sort(2, sortDir);
+                sortDir =  - sortDir;
+                mmodel.fireTableDataChanged();
+            }
+        });
+
+
         // Формирование интерфейса
         Box contents = new Box(BoxLayout.Y_AXIS);
         contents.add(new JScrollPane(table1));
@@ -165,6 +186,9 @@ public class UITable  extends JFrame  {
         JPanel buttons = new JPanel();
         buttons.add(remove);
         buttons.add(buttonAdd);
+        buttons.add(reloadTable);
+        buttons.add(sort1);
+
 
         getContentPane().add(buttons, "South");
         // Вывод окна на экран
@@ -172,24 +196,7 @@ public class UITable  extends JFrame  {
         setVisible(true);
 
         // Создание кнопки Сортировать таблицы
-        JButton sort1 = new JButton("Сортировать");
-        buttons.add(sort1);
-        sort1.addActionListener(new ActionListener() {
-            private int sortDir = -1;
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Sorting");
-                mt.sort(2, sortDir);
-                sortDir =  - sortDir;
-                mmodel.fireTableDataChanged();
 
-//                mt.getDescRangeMT(0, 4, 2)
-
-//                // Номер выделенной строки
-//                int idx = table.getSelectedRow();
-//                // Удаление выделенной строки
-//                tableModel.removeRow(idx);
-            }
-        });
     }
     // Модель данных
 //    class SimpleModel extends AbstractTableModel

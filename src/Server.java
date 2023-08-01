@@ -29,6 +29,8 @@ public class Server {
                 while (true) {
                     try (Socket socket = serverSocket.accept()){
                         System.out.println("Server: accepted connection from client");
+
+
                         try {
                             ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
                             ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
@@ -45,6 +47,7 @@ public class Server {
                                 }
                             }finally{
                                 objectOutputStream.writeObject(new EmptyResponse());
+                                objectOutputStream.flush();
                             }
 
 
