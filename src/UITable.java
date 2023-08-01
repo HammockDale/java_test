@@ -54,11 +54,11 @@ public class UITable  extends JFrame  {
     private DefaultTableModel tableModel;
     private JTable table1;
     // Данные для таблиц
-    private Object[][] array = new String[][] {{ "Сахар" , "кг", "1.5" },
-            { "Мука"  , "кг", "4.0" },
-            { "Молоко", "л" , "2.2" }};
-    // Заголовки столбцов
-    private Object[] columnsHeader = new String[] {"Наименование", "Ед.измерения", "Количество"};
+//    private Object[][] array = new String[][] {{ "Сахар" , "кг", "1.5" },
+//            { "Мука"  , "кг", "4.0" },
+//            { "Молоко", "л" , "2.2" }};
+//    // Заголовки столбцов
+//    private Object[] columnsHeader = new String[] {"Наименование", "Ед.измерения", "Количество"};
 
     public UITable()
     {
@@ -66,26 +66,27 @@ public class UITable  extends JFrame  {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         // Создание стандартной модели
         tableModel = new DefaultTableModel();
-        // Определение столбцов
-        tableModel.setColumnIdentifiers(columnsHeader);
-        // Наполнение модели данными
-        for (int i = 0; i < array.length; i++)
-            tableModel.addRow(array[i]);
+//        // Определение столбцов
+//        tableModel.setColumnIdentifiers(columnsHeader);
+//        // Наполнение модели данными
+//        for (int i = 0; i < array.length; i++)
+//            tableModel.addRow(array[i]);
 
-        // Создание таблицы на основании модели данных
-        table1 = new JTable(tableModel);
+//        // Создание таблицы на основании модели данных
+//        table1 = new JTable(tableModel);
         // Создание кнопки добавления строки таблицы
-        JButton add = new JButton("Добавить");
-        add.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                // Номер выделенной строки
-                int idx = table1.getSelectedRow();
-                // Вставка новой строки после выделенной
-                tableModel.insertRow(idx + 1, new String[] {
-                        "Товар №" + String.valueOf(table1.getRowCount()),
-                        "кг", "Цена"});
-            }
-        });
+//        JButton add = new JButton("Добавить");
+//        add.addActionListener(new ActionListener() {
+//            public void actionPerformed(ActionEvent e) {
+//                // Номер выделенной строки
+//                int idx = table1.getSelectedRow();
+//                // Вставка новой строки после выделенной
+//                tableModel.insertRow(idx + 1, new String[] {
+//                        "Товар №" + String.valueOf(table1.getRowCount()),
+//                        "кг", "Цена"});
+//            }
+//        });
+
 //        // Создание кнопки удаления строки таблицы
 //        JButton remove = new JButton("Удалить");
 //        remove.addActionListener(new ActionListener() {
@@ -116,6 +117,19 @@ public class UITable  extends JFrame  {
 //                tableModel.removeRow(idx);
             }
         });
+
+
+        JButton buttonAdd = new JButton("Добавить");
+        buttonAdd.addActionListener(new ActionListener() {
+            private int i = 0;
+            public void actionPerformed(ActionEvent e) {
+                ++i;
+                mt.addRecord( new Object[]{"id", "krya " + i,"ollya " + 2*i, "mur" + (100 - i)});
+                mt.reload();
+                mmodel.fireTableDataChanged();
+//                tableModel.removeRow(idx);
+            }
+        });
         // Формирование интерфейса
         Box contents = new Box(BoxLayout.Y_AXIS);
         contents.add(new JScrollPane(table1));
@@ -123,8 +137,8 @@ public class UITable  extends JFrame  {
         getContentPane().add(contents);
 
         JPanel buttons = new JPanel();
-        buttons.add(add);
         buttons.add(remove);
+        buttons.add(buttonAdd);
 
         getContentPane().add(buttons, "South");
         // Вывод окна на экран
