@@ -56,3 +56,14 @@ class SortRequest  extends Request  implements Serializable {
         return "Sort request by fild = " + fn + " order " + dir ;
     }
 }
+
+
+class GetRangeRowByIDRequest  extends Request  implements Serializable {
+
+    public int id;
+
+
+    public  String requestName(){
+        return "Get row by id = " + id +" request";
+    }
+}

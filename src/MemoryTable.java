@@ -80,6 +80,19 @@ public class MemoryTable {
 
     }
 
+    public int getRangeRowByID(int id){
+        int ret = -1;
+        if(id < 0) return -1;
+
+        for(int i=0; i<rowsToReturn.length; ++i){
+            Object[] r = (Object[])rowsToReturn[i];
+            if(r != null && r.length > 0 && Integer.parseInt(""+r[0]) == id){
+                ret = i;
+            }
+        }
+        return ret;
+    }
+
     public void reload(){
         rowsToReturn = null;
         rowsToReturn = getUnsortedRangeMT(0,getRowCount()-1);

@@ -194,11 +194,13 @@ public class UITable  extends JFrame  implements MyDebug {
             public void actionPerformed(ActionEvent e) {
                 ++i;
 
+                int id = -1;
 //                mt.addRecord( new Object[]{"id", "akrya " + i,"follya " + 2*i, "mur" + (100 - i)});
                 AddRecRequest addReq = new AddRecRequest();
                 addReq.row = new Object[]{"id", "akrya " + i,"follya " + 2*i, "mur" + (100 - i)};
                 try {
-                    client.call(addReq);
+                    AddRecResponse addRecResp = (AddRecResponse)client.call(addReq);
+                    id = addRecResp.id;
                 } catch (Exception exc) {
                     exc.printStackTrace();
                 }
@@ -207,16 +209,26 @@ public class UITable  extends JFrame  implements MyDebug {
 //                mt.reload();
                 ReloadRecRequest reloadReq = new ReloadRecRequest();
                 try {
-                    AddRecResponse addReqResp = (AddRecResponse)client.call(reloadReq);
+                    Response reloadResp = client.call(reloadReq);
+                    mmodel.fireTableDataChanged();
 
-                    //int row = ... спросить у сервера номер строки с айдиiником addReqResp.id
-                    //table2.scrollRectToVisible(table2.getCellRect(row, row, false));
-                    //table2.setRowSelectionInterval(row, row);
+
+                    GetRangeRowByIDRequest rowByIDRequest = new GetRangeRowByIDRequest();
+                    rowByIDRequest.id = id;
+                    // спросить у сервера номер строки с айдиiником addReqResp.id
+                    GetRangeRowByIDResponse rowByIdResp = (GetRangeRowByIDResponse) client.call(rowByIDRequest);
+
+                    int row = rowByIdResp.row;
+                    System.out.println("row="+row+" id="+id);
+                    if(row >= 0) {
+                        table2.scrollRectToVisible(table2.getCellRect(row, row, false));
+                        table2.setRowSelectionInterval(row, row);
+                    }
                 } catch (Exception exc) {
                     exc.printStackTrace();
                 }
 
-                mmodel.fireTableDataChanged();
+                //mmodel.fireTableDataChanged();
 //                tableModel.removeRow(idx);
             }
         });

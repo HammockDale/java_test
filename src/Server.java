@@ -77,6 +77,12 @@ public class Server implements MyDebug {
                                         if (DEBUG > 0) System.out.println("Server: add row");
                                         SortRequest sortReq = (SortRequest) req;
                                         mt.sort(sortReq.fn, sortReq.dir);
+                                    } if (req instanceof GetRangeRowByIDRequest) {
+                                        if (DEBUG > 0) System.out.println("Server: get row number by id");
+                                        GetRangeRowByIDRequest rowByIdReq = (GetRangeRowByIDRequest) req;
+                                        GetRangeRowByIDResponse rowByIdResp = new GetRangeRowByIDResponse();
+                                        rowByIdResp.row = mt.getRangeRowByID(rowByIdReq.id);
+                                        ret = rowByIdResp;
                                     }
 
 
