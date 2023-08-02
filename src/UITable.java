@@ -69,7 +69,7 @@ public class UITable  extends JFrame  {
 
     // Модель данных таблицы
     private DefaultTableModel tableModel;
-    private JTable table1;
+//    private JTable table1;
     // Данные для таблиц
 //    private Object[][] array = new String[][] {{ "Сахар" , "кг", "1.5" },
 //            { "Мука"  , "кг", "4.0" },
@@ -117,7 +117,7 @@ public class UITable  extends JFrame  {
         // Создание таблицы на основе модели данных
         JTable table2 = new JTable(mmodel);
         // Определение высоты строки
-        table2.setRowHeight(24);
+        table2.setRowHeight(24); //TODO
 
 
         // Создание кнопки удаления строки таблицы
@@ -212,9 +212,11 @@ public class UITable  extends JFrame  {
 
         // Формирование интерфейса
         Box contents = new Box(BoxLayout.Y_AXIS);
-        contents.add(new JScrollPane(table1));
-        contents.add(new JScrollPane(table2));
+//        contents.add(new JScrollPane(table1));
+        JScrollPane jScrollPane = new JScrollPane(table2);
+        contents.add(jScrollPane);
         getContentPane().add(contents);
+        System.out.println("jScrollPane " + jScrollPane.getSize());
 
         JPanel buttons = new JPanel();
         buttons.add(remove);
@@ -295,12 +297,21 @@ public class UITable  extends JFrame  {
         {
 
             Object ret = "" ;
-            Object[] o = mt.getRangeMT(row , row);
-            Object[] r = (Object[])o[0];
-//            System.out.println("r " + r);
-//            System.out.println(mt.getRowCount()+" "+r.length);
-//            System.out.println(r.length);
 
+
+//            System.out.println("Server: getRange");
+            RowRangeRequest rangeReq = new RowRangeRequest();
+            rangeReq.n = row;
+            rangeReq.m = row;
+
+            RowRangeResponse resp = (RowRangeResponse) client.call(rangeReq);
+
+            Object[] r = (Object[]) resp.rows[0];
+
+
+//            Object[] o = mt.getRangeMT(row , row);
+//            Object[] r = (Object[])o[0];
+//
             ret = r[column];
 
             if (r != null && column > 0 && column < r.length )

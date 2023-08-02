@@ -9,19 +9,6 @@ abstract class Request implements Serializable {
 }
 
 
-abstract class Response implements Serializable {
-    public String errStatus = null;
-
-    public  abstract String respName();
-}
-
-class EmptyResponse extends Response implements Serializable {
-    public  String respName(){
-        return (errStatus == null) ?"RESP OK" : "RESP ERROR:  "+errStatus;
-    }
-}
-
-
 class DropRecRequest  extends Request  implements Serializable {
     public int id = -1;
 
@@ -46,5 +33,15 @@ class AddRecRequest  extends Request  implements Serializable {
 
     public  String requestName(){
         return "add row ";
+    }
+}
+
+class RowRangeRequest  extends Request  implements Serializable {
+
+    public int m;
+    public int n;
+
+    public  String requestName(){
+        return "range request from " +n + " to " + m ;
     }
 }

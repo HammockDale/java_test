@@ -1,7 +1,7 @@
 import java.io.*;
 import java.net.*;
 
-public class Client {
+public class Client implements MyDebug {
     public MemoryTable mt;//TODO: remove this field and use network callinstead
 
     private String host ="localhost";
@@ -21,17 +21,24 @@ public class Client {
 
     public void connect(){
         try {
+            if(socket != null ) {
+                System.out.println(socket.toString());
+//                if (socket.isConnected()) {
+//                    if (DEBUG > 0) System.out.println("Client: socket already connected");
+//                    return;
+//                }
 
-            if(socket != null) {
-                System.out.println("Client: closing socket");
+
+                if (DEBUG > 0) System.out.println("Client: closing socket");
                 socket.close();
+                socket = null;
             }
-            socket = null;
+
         } catch (IOException e) {
             e.printStackTrace();
         }
         try {
-            System.out.println("Client: connecting to server "+host+":"+port);
+            if (DEBUG > 0) System.out.println("Client: connecting to server "+host+":"+port);
             socket = new Socket(host, port);
             objectOutputStream = new  ObjectOutputStream(socket.getOutputStream());
             objectInputStream = new ObjectInputStream(socket.getInputStream());
@@ -57,7 +64,7 @@ public class Client {
     private Response internalCall(Request req) throws IOException, ClassNotFoundException {
         Response ret = new EmptyResponse();
 
-        System.out.println("Client: sending request "+req.requestName());
+        if (DEBUG > 0) System.out.println("Client: sending request "+req.requestName());
 
         if(socket == null || !socket.isConnected() || socket.isClosed()){
             connect();
@@ -88,13 +95,14 @@ public class Client {
            mt.dropRecord(dropReq.id);
         }
 */
-        System.out.println("Client: sending to server request "+req.requestName());
+        if (DEBUG > 0) System.out.println("Client: sending to server request "+req.requestName());
         objectOutputStream.writeObject(req);
-        System.out.println("Client: request sent to server, flushing stream");
+        if (DEBUG > 0) System.out.println("Client: request sent to server, flushing stream");
         objectOutputStream.flush();
-        System.out.println("Client: waiting response");
+        if (DEBUG > 0) System.out.println("Client: waiting response");
         Response rsp = (Response)objectInputStream.readObject();
-        System.out.println("Client: received response from sever "+rsp.getClass().getName());
+        ret = rsp;
+        if (DEBUG > 0) System.out.println("Client: received response from sever "+rsp.getClass().getName());
 
 
         return ret;
