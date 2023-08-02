@@ -2,13 +2,13 @@ import java.util.Comparator;
 
 public final class RowComparator implements Comparator<Object> {
 
-        private int fn;
+        private final int fn;
 
         public RowComparator(int fn) {
             this.fn = fn;
         }
 
-        public static final int cc(Object a, Object b) {
+        public static int cc(Object a, Object b) {
             if( a == null&& b ==  null) {
                 return 0;
             }else

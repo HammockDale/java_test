@@ -1,4 +1,5 @@
-public interface MyDebug {
-    public static int DEBUG = 0;
 
+public interface MyDebug {
+
+    int DEBUG = 0;
 }

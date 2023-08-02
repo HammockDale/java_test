@@ -4,10 +4,9 @@ import java.net.*;
 public class Server implements MyDebug {
 
     private int port = 9999;
-    private ServerSocket serverSocket;
+    private final ServerSocket serverSocket;
 
     MemoryTable mt;
-
 
 
     public Server(int port) throws IOException {
@@ -32,23 +31,14 @@ public class Server implements MyDebug {
 
                         try {
                             socket.setTcpNoDelay(true);
-                            //socket.setSoLinger(false,0);
 
-
-                            //ObjectInputStream objectInputStream = new ObjectInputStream(new BufferedInputStream(socket.getInputStream(),100000));
-                            //ObjectOutputStream objectOutputStream = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream(),100000));
-                            ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
+                           ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
                             ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
 
-
-
                             while(socket != null && socket.isConnected() && !socket.isClosed()) {
-
                                 Response ret = new EmptyResponse();
                                 Request req = (Request) objectInputStream.readObject();
-
                                 if (DEBUG > 0) System.out.println("Server: received request " + req.requestName());
-
                                 try {
                                     if (DEBUG > 0) System.out.println("Server: processing request");
 
@@ -85,7 +75,6 @@ public class Server implements MyDebug {
                                         ret = rowByIdResp;
                                     }
 
-
                                     if (DEBUG > 0) System.out.println("Server: request processed");
                                 } finally {
                                     if (DEBUG > 0) System.out.println("Server: sending response");
@@ -95,32 +84,21 @@ public class Server implements MyDebug {
                                 }
 
                             }
-                        }catch(Exception e2){
+                        } catch(Exception e2){
                             e2.printStackTrace();
                             if(socket != null) {
                                 if (DEBUG > 0) System.out.println("Server: closing socket");
                                 socket.close();
                             }
                         } finally {
-                            if (DEBUG > 0) System.out.println("Server: client socket communication loop is broken, finilising");
-                           // if(socket != null) {
-                           //     if (DEBUG > 0) System.out.println("Server: closing socket");
-                           //     socket.close();
-                           // }
+                            if (DEBUG > 0) System.out.println("Server: client socket communication loop is broken, finishing");
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-
-                    // read data from the client
-                    // send data to the client
                 }
             }
         };
         thr.start();
     }
-
-
-
-
 }

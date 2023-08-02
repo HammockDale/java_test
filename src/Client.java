@@ -2,7 +2,7 @@ import java.io.*;
 import java.net.*;
 
 public class Client implements MyDebug {
-    public MemoryTable mt;//TODO: remove this field and use network callinstead
+    public MemoryTable mt;//TODO: remove this field and use network call instead
 
     private String host ="localhost";
     private int port = 9999;
@@ -23,11 +23,6 @@ public class Client implements MyDebug {
         try {
             if(socket != null ) {
                 System.out.println(socket.toString());
-//                if (socket.isConnected()) {
-//                    if (DEBUG > 0) System.out.println("Client: socket already connected");
-//                    return;
-//                }
-
 
                 if (DEBUG > 0) System.out.println("Client: closing socket");
                 socket.close();
@@ -41,14 +36,9 @@ public class Client implements MyDebug {
             if (DEBUG > 0) System.out.println("Client: connecting to server "+host+":"+port);
             socket = new Socket(host, port);
             socket.setTcpNoDelay(true);
-            //socket.setSoLinger(false,0);
 
-            //objectOutputStream = new  ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream(),100000));
-            //objectInputStream = new ObjectInputStream(new BufferedInputStream(socket.getInputStream(),100000));
             objectOutputStream = new  ObjectOutputStream(socket.getOutputStream());
             objectInputStream = new ObjectInputStream(socket.getInputStream());
-
-
 
         }catch(Exception ee){
             ee.printStackTrace();
@@ -77,9 +67,6 @@ public class Client implements MyDebug {
             connect();
         }
 
-
-
-
 /*     //// через файл для прокерки
         //Сериализация в файл с помощью класса ObjectOutputStream
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(
@@ -94,14 +81,6 @@ public class Client implements MyDebug {
         objectInputStream.close();
 */
 
-
-
-/*  //// тест вызова через локально доустпную таблицу баазы данных
-        if(req instanceof DropRecRequest){
-           DropRecRequest dropReq=  (DropRecRequest)req;
-           mt.dropRecord(dropReq.id);
-        }
-*/
         if (DEBUG > 0) System.out.println("Client: sending to server request "+req.requestName());
         objectOutputStream.writeObject(req);
         if (DEBUG > 0) System.out.println("Client: request sent to server, flushing stream");
@@ -111,9 +90,6 @@ public class Client implements MyDebug {
         ret = rsp;
         if (DEBUG > 0) System.out.println("Client: received response from sever "+rsp.getClass().getName());
 
-
         return ret;
     }
-
-
 }

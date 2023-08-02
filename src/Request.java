@@ -1,13 +1,8 @@
 import java.io.Serializable;
-import java.io.*;
-
 
 abstract class Request implements Serializable {
-
-
     public  abstract String requestName();
 }
-
 
 class DropRecRequest  extends Request  implements Serializable {
     public int id = -1;
@@ -16,7 +11,6 @@ class DropRecRequest  extends Request  implements Serializable {
          return "drop row id: "+id;
      }
 }
-
 
 
 class ReloadRecRequest  extends Request  implements Serializable {
@@ -53,7 +47,7 @@ class SortRequest  extends Request  implements Serializable {
     public int dir;
 
     public  String requestName(){
-        return "Sort request by fild = " + fn + " order " + dir ;
+        return "Sort request by filed = " + fn + " order " + dir ;
     }
 }
 
@@ -61,7 +55,6 @@ class SortRequest  extends Request  implements Serializable {
 class GetRangeRowByIDRequest  extends Request  implements Serializable {
 
     public int id;
-
 
     public  String requestName(){
         return "Get row by id = " + id +" request";
