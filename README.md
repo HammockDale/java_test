@@ -14,4 +14,5 @@
 client & server запускаются из одного процесса. Можно собрать и запустить проект следующим способом:
 
 cd ./src
-javac ./*.java && java UITable 
+javac ./*.java && java UITable  && rm ./*.class
+
