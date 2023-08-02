@@ -207,7 +207,11 @@ public class UITable  extends JFrame  implements MyDebug {
 //                mt.reload();
                 ReloadRecRequest reloadReq = new ReloadRecRequest();
                 try {
-                    client.call(reloadReq);
+                    AddRecResponse addReqResp = (AddRecResponse)client.call(reloadReq);
+
+                    //int row = ... спросить у сервера номер строки с айдиiником addReqResp.id
+                    //table2.scrollRectToVisible(table2.getCellRect(row, row, false));
+                    //table2.setRowSelectionInterval(row, row);
                 } catch (Exception exc) {
                     exc.printStackTrace();
                 }

@@ -22,3 +22,13 @@ class RowRangeResponse  extends Response  implements Serializable {
         return "range response, lengtr = " + rows.length;
     }
 }
+
+
+class AddRecResponse  extends Response  implements Serializable {
+
+    int id = -1;
+
+    public  String respName(){
+        return "add record response, id = " + id;
+    }
+}

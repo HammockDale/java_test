@@ -63,7 +63,10 @@ public class Server implements MyDebug {
                                     } else if (req instanceof AddRecRequest) {
                                         if (DEBUG > 0) System.out.println("Server: add row");
                                         AddRecRequest addReq = (AddRecRequest) req;
-                                        mt.addRecord(addReq.row);
+                                        int id = mt.addRecord(addReq.row);
+                                        AddRecResponse addReqResponse = new AddRecResponse();
+                                        addReqResponse.id = id;
+                                        ret = addReqResponse;
                                     } else if (req instanceof RowRangeRequest) {
                                         if (DEBUG > 0) System.out.println("Server: getRange");
                                         RowRangeRequest rangeReq = (RowRangeRequest) req;

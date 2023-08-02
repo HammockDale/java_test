@@ -1,6 +1,6 @@
 import java.util.Comparator;
 
-public class RowComparator implements Comparator<Object> {
+public final class RowComparator implements Comparator<Object> {
 
         private int fn;
 
@@ -8,7 +8,7 @@ public class RowComparator implements Comparator<Object> {
             this.fn = fn;
         }
 
-        public static int cc(Object a, Object b) {
+        public static final int cc(Object a, Object b) {
             if( a == null&& b ==  null) {
                 return 0;
             }else
@@ -29,7 +29,7 @@ public class RowComparator implements Comparator<Object> {
 
 
         @Override
-        public int compare(Object o1a, Object o2b) {
+        public final int compare(Object o1a, Object o2b) {
             Object[] o1 =(Object[])o1a;
             Object[] o2 =(Object[])o2b;
 

@@ -14,13 +14,16 @@ public class MemoryTable {
 
     private int seqNo = 1;
 
-    public void addRecord(Object[] o){
+    public int addRecord(Object[] o){
+        int ret = -1;
         if (o == null ||o.length < 1) {
             System.out.println("wrong object");
         } else {
             addRecord(seqNo, o);
+            ret = seqNo;
             ++seqNo;
         }
+        return ret;
     }
 
     private void addRecord(Integer id, Object[] o){
@@ -118,6 +121,7 @@ public class MemoryTable {
     private Object[] getAscRangeMT(int n, int m, int fn){
        Object[] obj = getUnsortedRangeMT(n,m);
        RowComparator rc = new RowComparator(fn);
+       ////System.out.println("SORTING TABLE ASC");
        Arrays.parallelSort(obj, 0, obj.length, rc);
         //Arrays.sort(obj, rc);
 
@@ -128,6 +132,7 @@ public class MemoryTable {
     Object[] getDescRangeMT(int n, int m, int fn){
         Object[] obj = getUnsortedRangeMT(n,m);
         RowComparator rc = new RowComparator(fn);
+        ////System.out.println("SORTING TABLE DESC");
         Arrays.parallelSort(obj, 0, obj.length, new Comparator(){
             public int compare(Object o1a, Object o2b){
                 return -rc.compare(o1a,o2b);
@@ -163,7 +168,7 @@ public class MemoryTable {
 
 // -------------------------------------------------------------------------
     public void testFilDataMT(){
-        for (int i = 1; i < 100; i++)
+        for (int i = 1; i < 1000; i++)
             this.addRecord( new Object[]{"id", "bla " + i,"kva " + 2*i, "ewr" + (100 - i)});
 
     }
