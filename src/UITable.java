@@ -2,9 +2,11 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.awt.event.*;
 
 
 //class MyTableModel extends DefaultTableModel {
@@ -67,6 +69,36 @@ public class UITable  extends JFrame  implements MyDebug {
         }
     }
 
+
+    JTable table2;
+
+    {
+        this.addWindowFocusListener( new WindowFocusListener() {
+
+            private boolean positioned = false;
+
+        @Override
+        public void windowGainedFocus(WindowEvent e) {
+
+            if( positioned ) return;
+            System.out.println("Window focus gained the first time");
+
+            //// https://groups.google.com/g/comp.lang.java.gui/c/vtzN8Wf2WgY?pli=1
+            int middleRow = mmodel.getRowCount()/2;
+            table2.scrollRectToVisible(table2.getCellRect(middleRow, middleRow, false));
+            table2.setRowSelectionInterval(middleRow, middleRow);
+
+            positioned = true;
+        }
+
+        @Override
+        public void windowLostFocus(WindowEvent e) {
+
+        }
+    }) ;
+    }
+
+
     // Модель данных таблицы
     private DefaultTableModel tableModel;
 //    private JTable table1;
@@ -115,9 +147,12 @@ public class UITable  extends JFrame  implements MyDebug {
 //            }
 //        });
         // Создание таблицы на основе модели данных
-        JTable table2 = new JTable(mmodel);
+        table2 = new JTable(mmodel);
         // Определение высоты строки
         table2.setRowHeight(24);
+        int middleRow = mmodel.getRowCount()/2;
+        table2.scrollRectToVisible(table2.getCellRect(middleRow, middleRow, false));
+        table2.setRowSelectionInterval(middleRow, middleRow);
 
 
         // Создание кнопки удаления строки таблицы
@@ -242,6 +277,32 @@ public class UITable  extends JFrame  implements MyDebug {
             }
         });
 
+        JButton testBtn = new JButton("Unit est");
+        testBtn.addActionListener(new ActionListener() {
+            private int sortDir = -1;
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Unittest");
+                mmodel.fireTableDataChanged();
+
+                System.out.println("selected row: "+table2.getSelectedRow());
+                //table2.setRowSelectionInterval(10, 10);
+                //table2.getSelectionModel().addSelectionInterval(10, 10);
+                //int row = 10;
+                //table2.scrollRectToVisible(table2.getCellRect(row, row, false));
+                //table2.setRowSelectionInterval(row, row);
+                //table2.scrollRectToVisible(new Rectangle(table2.getCellRect(row, 0,
+                //        true)));
+
+                    //// https://groups.google.com/g/comp.lang.java.gui/c/vtzN8Wf2WgY?pli=1
+                int middleRow = mmodel.getRowCount()/2;
+                table2.scrollRectToVisible(table2.getCellRect(middleRow, middleRow, false));
+                table2.setRowSelectionInterval(middleRow, middleRow);
+
+                System.out.println("selected row: "+table2.getSelectedRow());
+
+            }
+        });
+
 
         // Формирование интерфейса
         Box contents = new Box(BoxLayout.Y_AXIS);
@@ -258,13 +319,14 @@ public class UITable  extends JFrame  implements MyDebug {
         buttons.add(sort1);
         buttons.add(sort2);
         buttons.add(sort3);
+        buttons.add(testBtn);
 
         getContentPane().add(buttons, "South");
         // Вывод окна на экран
         setSize(600, 700);
         setVisible(true);
 
-        // Создание кнопки Сортировать таблицы
+
 
     }
     // Модель данных
