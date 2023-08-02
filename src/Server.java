@@ -33,9 +33,11 @@ public class Server implements MyDebug {
 
 
                         try {
+                            ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
+                            ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+
+
                             while(socket != null && socket.isConnected() && !socket.isClosed()) {
-                                ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
-                                ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
 
                                 Response ret = new EmptyResponse();
                                 Request req = (Request) objectInputStream.readObject();
@@ -77,12 +79,16 @@ public class Server implements MyDebug {
                             }
                         }catch(Exception e2){
                             e2.printStackTrace();
-                        } finally {
-                            if (DEBUG > 0) System.out.println("Server: client socket communication loop is broken, finilising");
                             if(socket != null) {
                                 if (DEBUG > 0) System.out.println("Server: closing socket");
                                 socket.close();
                             }
+                        } finally {
+                            if (DEBUG > 0) System.out.println("Server: client socket communication loop is broken, finilising");
+                           // if(socket != null) {
+                           //     if (DEBUG > 0) System.out.println("Server: closing socket");
+                           //     socket.close();
+                           // }
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
