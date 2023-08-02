@@ -45,3 +45,14 @@ class RowRangeRequest  extends Request  implements Serializable {
         return "range request from " +n + " to " + m ;
     }
 }
+
+
+class SortRequest  extends Request  implements Serializable {
+
+    public int fn;
+    public int dir;
+
+    public  String requestName(){
+        return "Sort request by fild = " + fn + " order " + dir ;
+    }
+}

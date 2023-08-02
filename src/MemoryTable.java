@@ -2,7 +2,7 @@ import java.util.*;
 
 import java.util.Comparator;
 public class MemoryTable {
-    HashMap<Integer, Object[]> memoryTable = new HashMap<Integer, Object[]>();
+    HashMap<Integer, Object[]> memoryTable = new HashMap<>();
 
     public MemoryTable() {
         testFilDataMT();
@@ -97,7 +97,7 @@ public class MemoryTable {
 
         if(dir < 0)
             rowsToReturn = getAscRangeMT(0,getRowCount()-1,fn);
-        else if(dir < 0)
+        else if(dir > 0)
             rowsToReturn = getDescRangeMT(0,getRowCount()-1,fn);
         else
             rowsToReturn = getUnsortedRangeMT(0,getRowCount()-1);
@@ -146,8 +146,17 @@ public class MemoryTable {
     }
 
     // Количество столбцов
+    private int colNo = -1;
+
     public int getColumnCount() {
-        return 3;
+        if (colNo > 0)
+            return colNo;
+        colNo = 4;
+        if (getRowCount() > 0) {
+            Object[] o = memoryTable.get(memoryTable.keySet().toArray()[0]);
+            colNo = o.length;
+        }
+        return colNo;
     }
 
 

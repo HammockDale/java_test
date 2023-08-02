@@ -42,7 +42,7 @@ import java.io.IOException;
 //}
 
 
-public class UITable  extends JFrame  {
+public class UITable  extends JFrame  implements MyDebug {
 
     Server srv;
 
@@ -117,7 +117,7 @@ public class UITable  extends JFrame  {
         // Создание таблицы на основе модели данных
         JTable table2 = new JTable(mmodel);
         // Определение высоты строки
-        table2.setRowHeight(24); //TODO
+        table2.setRowHeight(24);
 
 
         // Создание кнопки удаления строки таблицы
@@ -198,12 +198,45 @@ public class UITable  extends JFrame  {
             }
         });
 
-        JButton sort1 = new JButton("Сортировать");
+        JButton sort1 = new JButton("Сорт 1");
         sort1.addActionListener(new ActionListener() {
             private int sortDir = -1;
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Sorting");
+                if (DEBUG > 0) System.out.println("Sorting");
+                SortRequest sortReq = new SortRequest();
+                sortReq.fn = 1;
+                sortReq.dir = sortDir;
+                client.call(sortReq);
+//                mt.sort(2, sortDir);
+                sortDir =  - sortDir;
+                mmodel.fireTableDataChanged();
+            }
+        });
+
+        JButton sort2 = new JButton("Сорт 2");
+        sort2.addActionListener(new ActionListener() {
+            private int sortDir = -1;
+            public void actionPerformed(ActionEvent e) {
+                if (DEBUG > 0) System.out.println("Sorting");
+                SortRequest sortReq = new SortRequest();
+                sortReq.fn = 2;
+                sortReq.dir = sortDir;
+//                client.call(sortReq);
                 mt.sort(2, sortDir);
+                sortDir =  - sortDir;
+                mmodel.fireTableDataChanged();
+            }
+        });
+        JButton sort3 = new JButton("Сорт 3");
+        sort3.addActionListener(new ActionListener() {
+            private int sortDir = -1;
+            public void actionPerformed(ActionEvent e) {
+                if (DEBUG > 0) System.out.println("Sorting");
+                SortRequest sortReq = new SortRequest();
+                sortReq.fn = 3;
+                sortReq.dir = sortDir;
+//                client.call(sortReq);
+                mt.sort(3, sortDir);
                 sortDir =  - sortDir;
                 mmodel.fireTableDataChanged();
             }
@@ -213,21 +246,22 @@ public class UITable  extends JFrame  {
         // Формирование интерфейса
         Box contents = new Box(BoxLayout.Y_AXIS);
 //        contents.add(new JScrollPane(table1));
-        JScrollPane jScrollPane = new JScrollPane(table2);
-        contents.add(jScrollPane);
+
+        contents.add(new JScrollPane(table2));
         getContentPane().add(contents);
-        System.out.println("jScrollPane " + jScrollPane.getSize());
+
 
         JPanel buttons = new JPanel();
         buttons.add(remove);
         buttons.add(buttonAdd);
         buttons.add(reloadTable);
         buttons.add(sort1);
-
+        buttons.add(sort2);
+        buttons.add(sort3);
 
         getContentPane().add(buttons, "South");
         // Вывод окна на экран
-        setSize(400, 300);
+        setSize(600, 700);
         setVisible(true);
 
         // Создание кнопки Сортировать таблицы

@@ -70,6 +70,10 @@ public class Server implements MyDebug {
                                         RowRangeResponse rangeResp = new RowRangeResponse();
                                         rangeResp.rows = mt.getRangeMT(rangeReq.n, rangeReq.m);
                                         ret = rangeResp;
+                                    } else if (req instanceof SortRequest) {
+                                        if (DEBUG > 0) System.out.println("Server: add row");
+                                        SortRequest sortReq = (SortRequest) req;
+                                        mt.sort(sortReq.fn, sortReq.dir);
                                     }
 
 
