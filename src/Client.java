@@ -40,8 +40,15 @@ public class Client implements MyDebug {
         try {
             if (DEBUG > 0) System.out.println("Client: connecting to server "+host+":"+port);
             socket = new Socket(host, port);
+            socket.setTcpNoDelay(true);
+            //socket.setSoLinger(false,0);
+
+            //objectOutputStream = new  ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream(),100000));
+            //objectInputStream = new ObjectInputStream(new BufferedInputStream(socket.getInputStream(),100000));
             objectOutputStream = new  ObjectOutputStream(socket.getOutputStream());
             objectInputStream = new ObjectInputStream(socket.getInputStream());
+
+
 
         }catch(Exception ee){
             ee.printStackTrace();

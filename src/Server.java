@@ -1,6 +1,4 @@
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.*;
 
 public class Server implements MyDebug {
@@ -29,12 +27,19 @@ public class Server implements MyDebug {
                 while (true) {
                     if (DEBUG > 0) System.out.println("Server: waiting fro client connection");
                     try (Socket socket = serverSocket.accept()){
-                       if (DEBUG > 0) System.out.println("Server: accepted connection from client");
+                       if (DEBUG > 0) System.out.println("Server: accepted connection from client: sock buff size="+socket.getSendBufferSize());
 
 
                         try {
+                            socket.setTcpNoDelay(true);
+                            //socket.setSoLinger(false,0);
+
+
+                            //ObjectInputStream objectInputStream = new ObjectInputStream(new BufferedInputStream(socket.getInputStream(),100000));
+                            //ObjectOutputStream objectOutputStream = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream(),100000));
                             ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
                             ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+
 
 
                             while(socket != null && socket.isConnected() && !socket.isClosed()) {

@@ -1,4 +1,4 @@
 public interface MyDebug {
-    public static int DEBUG = 1;
+    public static int DEBUG = 0;
 
 }
