@@ -50,7 +50,7 @@ public class Client implements MyDebug {
 
     public Response call(Request req){
         try {
-            if(socket == null || socket.isConnected()) connect();
+            if(socket == null || !socket.isConnected() || socket.isClosed()) connect();
             return internalCall(req);
         } catch (Exception e) {
             e.printStackTrace();
